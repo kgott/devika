@@ -52,7 +52,11 @@ class Coder:
             if line.startswith("File: "):
                 if current_file and current_code:
                     result.append({"file": current_file, "code": "\n".join(current_code)})
-                current_file = line.split("`")[1].strip()
+                parts = line.split("`")
+                if len(parts) > 1:
+                    current_file = parts[1].strip()
+                else:
+                    current_file = line.split(":")[1].replace("`", "").strip()
                 current_code = []
                 code_block = False
             elif line.startswith("```"):
